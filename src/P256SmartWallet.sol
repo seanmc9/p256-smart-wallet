@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import {Secp256r1} from "./Secp256r1.sol";
+import {Secp256r1} from "./libraries/Secp256r1.sol";
 
-/// @notice Contract designed for being delegated to by EOAs to authorize a secp256r1 key to transact on their behalf.
-contract P256Delegation {
+/// @notice Passkey smart contract wallet.
+contract P256SmartWallet {
     /// @notice The x coordinate of the authorized public key
     uint256 authorizedPublicKeyX;
     /// @notice The y coordinate of the authorized public key
@@ -13,10 +13,8 @@ contract P256Delegation {
     /// @notice Internal nonce used for replay protection, must be tracked and included into prehashed message.
     uint256 public nonce;
 
-    /// @notice Authorizes provided public key to transact on behalf of this account. Only callable by EOA itself.
-    function authorize(uint256 publicKeyX, uint256 publicKeyY) public {
-        require(msg.sender == address(this));
-
+    /// @notice Sets the passkey that controls this smart wallet.
+    constructor(uint256 publicKeyX, uint256 publicKeyY) {
         authorizedPublicKeyX = publicKeyX;
         authorizedPublicKeyY = publicKeyY;
     }
